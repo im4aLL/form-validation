@@ -27,20 +27,26 @@ Form.prototype.validate = function(callback){
 			var $field 				= $('#'+id),
 				isValidField 		= true;
 
+			// if field type radio
+			if( field.inputType !== undefined && (field.inputType == 'radio' || field.inputType == 'checkbox') ) $field = $('input[name="'+id+'"]:checked');
+
 			// checking for error
-			if( field.customMethod !== undefined && field.customMethod != null ) isValidField = field.customMethod.call( this, id );
+			if( field.customMethod !== undefined && field.customMethod != null ) isValidField = field.customMethod.call( this, { id: id, field: field } );
 			else isValidField = self.method(id, field);
 
 			// if contains error
 			if( isValidField === false ) {
 				error = true;
-				errors.push(id);	
+				var e = {};
+				e.id = id;
+				e.errMsg = field.errMsg !== undefined ? field.errMsg : '';
+				errors.push(e);
 			}
 			else fieldValues[id] = $field.val();
 
 			// if user defined custom error replace
 			var customError = ( field.errReplace !== undefined && field.errReplace != null ) ? true : false;
-			( customError ) ? field.errReplace.call( this, id ) : '';
+			( customError ) ? field.errReplace.call( this, { id: id, field: field, isValidField: isValidField } ) : '';
 
 			// showing error
 			if( errReplace === false && !isValidField && customError === false ) self.addError(id, field);
@@ -65,8 +71,17 @@ Form.prototype.validate = function(callback){
 Form.prototype.method = function(id, field){
 	var $field = $('#'+id),
 		isValidField = true;
+
+	// if field type radio or checkbox
+	if( field.inputType !== undefined && (field.inputType == 'radio' || field.inputType == 'checkbox') ) $field = $('input[name="'+id+'"]:checked');
 	
-	if( field.require !== undefined && $('#' + field.require.name).val() != field.require.value ) return true;
+	// if field validation has dependancy to other field
+	if( field.require !== undefined ) {
+		var requireInputType = this.rulesObj[field.require.name].inputType;
+
+		if( requireInputType === undefined && $('#' + field.require.name).val() != field.require.value ) return true;
+		else if( requireInputType !== undefined && (requireInputType == 'radio' || requireInputType == 'checkbox') && $('input[name="'+field.require.name+'"]:checked').val() != field.require.value ) return true;
+	}
 
 	switch( field.type ) {
 		case 'email':
@@ -75,13 +90,16 @@ Form.prototype.method = function(id, field){
 		break;
 
 		case 'text':
-			if( $field.val().length == 0 ) isValidField = false;	
+			if( $field.val() === undefined || $field.val().length == 0 ) isValidField = false;	
 		break;
 
 		case 'array':
 			isValidField = false;
 			$('input[name="'+id+'[]"]').each(function(index, el) {
-				if( $(el).val().length > 0 ) isValidField = true;
+				if( field.inputType == 'checkbox' ) {
+					if( $(el).is(':checked') ) isValidField = true;
+				}
+				else if( $(el).val().length > 0 ) isValidField = true;
 			});
 		break;
 
