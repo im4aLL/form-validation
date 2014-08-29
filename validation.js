@@ -1,13 +1,8 @@
-/* --------------------------------------------------------------------------------------------------------------
- Form validation skeleton prototype function starts (don't edit this)
- Usage: 
- var contactFrmInstance = new Form($contactFrm, rules);
- contactFrmInstance.validate(function(form){
-	console.log(form);
- });
- rules obj { type: 'text/email', errMsg : 'message', errReplace: function(id){}, customMethod: function(id){} }
- for details see $contactFrm call
------------------------------------------------------------------------------------------------------------------ */
+/**
+ * https://github.com/im4aLL/form-validation
+ * @author me@habibhadi.com
+ * @authorURL http://habibhadi.com
+ */
 var Form = function(formObj, rules, errorReplacement){
 	this.form 				= formObj;
 	this.rulesObj 			= rules;
@@ -71,6 +66,8 @@ Form.prototype.method = function(id, field){
 	var $field = $('#'+id),
 		isValidField = true;
 	
+	if( field.require !== undefined && $('#' + field.require.name).val() != field.require.value ) return true;
+
 	switch( field.type ) {
 		case 'email':
 			var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -80,6 +77,15 @@ Form.prototype.method = function(id, field){
 		case 'text':
 			if( $field.val().length == 0 ) isValidField = false;	
 		break;
+
+		case 'array':
+			isValidField = false;
+			$('input[name="'+id+'[]"]').each(function(index, el) {
+				if( $(el).val().length > 0 ) isValidField = true;
+			});
+		break;
+
+		// feel free to add your own method
 	}
 	
 	return isValidField;
@@ -90,6 +96,7 @@ Form.prototype.addError = function(id, field){
 	var $field = $('#'+id),
 	errText = field.errMsg !== undefined ? field.errMsg : 'This field is required';
 	
+	// feel free to change the way you want
 	$field.parent().addClass('is-error').find('.hint').remove();
 	$field.parent().append('<span class="hint"><i></i>'+errText+'</span>');
 }
@@ -97,9 +104,7 @@ Form.prototype.addError = function(id, field){
 // remove error
 Form.prototype.removeError = function(id, field){
 	var $field = $('#'+id);
+
+	// feel free to change the way you want
 	$field.parent().removeClass('is-error').find('.hint').remove();
 }
-
-/* ------------------------------------------------------------------
- Form validation skeleton prototype function end (don't edit this)	
---------------------------------------------------------------------- */
