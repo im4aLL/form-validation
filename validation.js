@@ -42,7 +42,16 @@ Form.prototype.validate = function(callback){
 				e.errMsg = field.errMsg !== undefined ? field.errMsg : '';
 				errors.push(e);
 			}
-			else fieldValues[id] = $field.val();
+			else {
+				if( field.type == 'array' ) {
+					var temp = [];
+					$('#'+id).find("[name^='"+id+"']:checked").each(function(index, el) {
+						temp.push( $(el).val() );
+					});
+					fieldValues[id] = temp;
+				}
+				else fieldValues[id] = $field.val();
+			}
 
 			// if user defined custom error replace
 			var customError = ( field.errReplace !== undefined && field.errReplace != null ) ? true : false;
