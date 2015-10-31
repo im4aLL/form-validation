@@ -1,0 +1,33 @@
+{
+  "name": "Simple Form validation (jQuery)",
+  "version": "2.0.0",
+  "homepage": "https://github.com/im4aLL/form-validation",
+  "authors": [
+    "Habib Hadi <me@habibhadi.com>"
+  ],
+  "description": "Lightweight form validation",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "form",
+    "validation",
+    "validate",
+    "form",
+    "validation",
+    "simple",
+    "validation",
+    "jquery",
+    "validation",
+    "jquery",
+    "validate"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

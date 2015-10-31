@@ -59,7 +59,7 @@ Form.prototype.validate = function(callback){
 
 			// showing error
 			if( errReplace === false && !isValidField && customError === false ) self.addError(id, field);
-			
+
 			// bind / unbind error
 			$field.blur(function(){
 				( self.method(id, field) === true ) ? self.removeError(id, field) : self.addError(id, field);
@@ -83,7 +83,7 @@ Form.prototype.method = function(id, field){
 
 	// if field type radio or checkbox
 	if( field.inputType !== undefined && (field.inputType == 'radio' || field.inputType == 'checkbox') ) $field = $('input[name="'+id+'"]:checked');
-	
+
 	// if field validation has dependancy to other field
 	if( field.require !== undefined ) {
 		var requireInputType = this.rulesObj[field.require.name].inputType;
@@ -99,7 +99,7 @@ Form.prototype.method = function(id, field){
 		break;
 
 		case 'text':
-			if( $field.val() === undefined || $field.val().length == 0 ) isValidField = false;	
+			if( $field.val() === undefined || $field.val().length == 0 ) isValidField = false;
 		break;
 
 		case 'array':
@@ -114,7 +114,7 @@ Form.prototype.method = function(id, field){
 
 		// feel free to add your own method
 	}
-	
+
 	return isValidField;
 }
 
@@ -122,7 +122,7 @@ Form.prototype.method = function(id, field){
 Form.prototype.addError = function(id, field){
 	var $field = $('#'+id),
 	errText = field.errMsg !== undefined ? field.errMsg : 'This field is required';
-	
+
 	// feel free to change the way you want
 	$field.parent().addClass('is-error').find('.hint').remove();
 	$field.parent().append('<span class="hint"><i></i>'+errText+'</span>');

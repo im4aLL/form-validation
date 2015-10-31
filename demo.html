@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>jQuery form validation - simple and lightweight</title>
+    <link rel="stylesheet" href="demo.css">
+</head>
+<body>
+
+    <h1>jQuery form validation - simple and lightweight <span>(jquery.form.validation.2.0.0.js)</span></h1>
+
+    <h3>Demo one:</h3>
+    <form action="" id="form-one">
+
+        <div class="field-block">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name">
+        </div>
+
+        <div class="field-block">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email">
+        </div>
+
+        <div class="field-block">
+            <label>&nbsp;</label>
+            <button type="submit">Submit</button>
+        </div>
+
+    </form>
+
+<code>var options = {
+    rules: {
+        name: { type: 'text' },
+        email: { type: 'email' }
+    }
+};
+
+$('#form-one').validate(options);
+</code>
+
+<hr>
+
+    <h3>Demo two:</h3>
+    <form action="" id="form-two">
+
+        <div class="field-block">
+            <label for="name2">Name</label>
+            <input type="text" name="name2">
+        </div>
+
+        <div class="field-block">
+            <label for="email2">Email</label>
+            <input type="email" name="email2" id="email2">
+        </div>
+
+        <div class="field-block">
+            <label>&nbsp;</label>
+            <button type="submit">Submit</button>
+        </div>
+
+    </form>
+
+<code>var options2 = {
+    rules: {
+        name2: { type: 'text', errMsg: 'Enter your name' },
+        email2: { type: 'email', errMsg: 'Enter your email' }
+    }
+};
+
+$('#form-two').validate(options2);
+</code>
+
+<hr>
+
+    <h3>Demo three:</h3>
+    <form action="" id="form-three">
+
+        <div class="field-block">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username">
+        </div>
+
+        <div class="field-block">
+            <label for="email3">Email</label>
+            <input type="email" name="email3" id="email3">
+        </div>
+
+        <div class="field-block">
+            <label>&nbsp;</label>
+            <button type="submit">Submit</button>
+        </div>
+
+    </form>
+
+<code>function checkusername(obj){
+    if( $('#'+obj.id).val().length >= 5 ) return true;
+    else return false;
+}
+
+function customError(obj){
+    if( obj.isValidField === false ) {
+        alert(obj.field.errMsg);
+    }
+}
+
+
+var options3 = {
+    rules: {
+        username: { type: 'text', errMsg: 'Username must be at least 5 character long', customMethod: checkusername, errReplace: customError },
+        email3: { type: 'email', errMsg: 'Enter your email' }
+    }
+};
+
+$('#form-three').validate(options3);
+</code>
+
+<hr>
+
+    <h3>Demo four:</h3>
+    <form action="" id="form-four">
+
+        <div class="field-block">
+            <label for="name4">Name</label>
+            <input type="text" name="name4" id="name4">
+        </div>
+
+        <div class="field-block">
+            <label for="email3">Email</label>
+            <input type="email" name="email4" id="email4">
+        </div>
+
+        <div class="field-block">
+            <label>&nbsp;</label>
+            <button type="submit">Submit</button> checkout the console
+        </div>
+
+    </form>
+
+<code>var options4 = {
+    rules: {
+        name4: { type: 'text', errMsg: 'Enter your name' },
+        email4: { type: 'email', errMsg: 'Enter your email' }
+    },
+    errorReplacement: true,
+    onComplete: function(form){
+        console.log(form);
+    }
+};
+
+$('#form-four').validate(options4);
+</code>
+
+<hr>
+
+    <h3>Demo five:</h3>
+    <form action="" id="form-five" class="label-big">
+
+        <div class="field-block">
+            <label for="name5">Name</label>
+            <input type="text" name="name5" id="name5">
+        </div>
+
+        <div class="field-block">
+            <label for="type">Do you have national id?</label>
+            <select name="type" id="type">
+                <option value=""></option>
+                <option value="no">I dont have national ID</option>
+                <option value="yes">I have national id</option>
+            </select>
+        </div>
+
+        <div class="field-block">
+            <label for="nid">National ID</label>
+            <input type="text" name="nid" id="nid">
+        </div>
+
+        <div class="field-block">
+            <label>&nbsp;</label>
+            <button type="submit">Submit</button> checkout the console
+        </div>
+
+    </form>
+
+<code>var options5 = {
+    rules: {
+        name5: { type: 'text', errMsg: 'Enter your name' },
+        type: { type: 'text', errMsg: 'Required field' },
+        nid: { type: 'text', errMsg: 'Enter your NID', require: { name: 'type', value: 'yes' } }
+    },
+    onComplete: function(form){
+        console.log(form);
+    }
+};
+
+$('#form-five').validate(options5);
+</code>
+
+<hr>
+
+    <h3>Demo complex</h3>
+    <form action="" id="form-six" class="label-big">
+
+        <div class="field-block">
+            <label for="name6">Name</label>
+            <input type="text" name="name" id="name6">
+        </div>
+
+        <div class="field-block">
+            <label>Select your gender</label>
+            <input type="radio" name="gender" value="male"> Male
+            <input type="radio" name="gender" value="female"> Female
+        </div>
+
+        <div class="field-block">
+            <label for="">Feedback</label>
+            <div id="feedback" style="display: inline-block">
+                Good? why? <input type="text" name="feedback[]">
+                Bad? why? <input type="text" name="feedback[]">
+                Avg? why? <input type="text" name="feedback[]">
+            </div>
+        </div>
+
+        <div class="field-block">
+            <label for="">&nbsp;</label>
+            <input type="checkbox" name="agree" id="agree"> I agree with the terms and conditions
+        </div>
+
+        <div class="field-block">
+            <label for="">I like</label>
+            <div id="like" style="display: inline-block">
+                <input type="checkbox" name="like[]" value="juice"> Juice
+                <input type="checkbox" name="like[]" value="fried rice"> Fried rice
+                <input type="checkbox" name="like[]" value="spicy"> Spicy food
+            </div>
+        </div>
+
+        <div class="field-block">
+            <label>&nbsp;</label>
+            <button type="submit">Submit</button> checkout the console!
+        </div>
+
+    </form>
+
+<code>var settings = {
+    rules: {
+        name6: { type: 'text', errMsg: 'Enter your name' },
+        gender: { type: 'radio', errMsg: 'Select your gender' },
+        feedback: { type: 'array', errMsg: 'Field requried' },
+        agree: { type: 'checkbox', errMsg: 'You must agree with the terms' },
+        like: { type: 'array', errMsg: 'Requried' }
+    },
+    onComplete: function(form){
+        console.log(form);
+    }
+};
+
+$('#form-six').validate(settings);
+</code>
+
+<hr>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="src/jquery.form.validation.2.0.0.js"></script>
+
+    <script>
+        jQuery(document).ready(function($) {
+            // form one
+            var options = {
+                rules: {
+                    name: { type: 'text' },
+                    email: { type: 'email' }
+                }
+            };
+
+            $('#form-one').validate(options);
+
+            // form two
+            var options2 = {
+                rules: {
+                    name2: { type: 'text', errMsg: 'Enter your name' },
+                    email2: { type: 'email', errMsg: 'Enter your email' }
+                }
+            };
+
+            $('#form-two').validate(options2);
+
+            // form three
+            function checkusername(obj){
+                if( $('#'+obj.id).val().length >= 5 ) return true;
+                else return false;
+            }
+
+            function customError(obj){
+                if( obj.isValidField === false ) {
+                    alert(obj.field.errMsg);
+                }
+            }
+
+
+            var options3 = {
+                rules: {
+                    username: { type: 'text', errMsg: 'Username must be at least 5 character long', customMethod: checkusername, errReplace: customError },
+                    email3: { type: 'email', errMsg: 'Enter your email' }
+                }
+            };
+
+            $('#form-three').validate(options3);
+
+            // form four
+            var options4 = {
+                rules: {
+                    name4: { type: 'text', errMsg: 'Enter your name' },
+                    email4: { type: 'email', errMsg: 'Enter your email' }
+                },
+                errorReplacement: true,
+                onComplete: function(form){
+                    console.log(form);
+                }
+            };
+
+            $('#form-four').validate(options4);
+
+            // form five
+            var options5 = {
+                rules: {
+                    name5: { type: 'text', errMsg: 'Enter your name' },
+                    type: { type: 'text', errMsg: 'Required field' },
+                    nid: { type: 'text', errMsg: 'Enter your NID', require: { name: 'type', value: 'yes' } }
+                },
+                onComplete: function(form){
+                    console.log(form);
+                }
+            };
+
+            $('#form-five').validate(options5);
+
+            // form six
+            var settings = {
+                rules: {
+                    name6: { type: 'text', errMsg: 'Enter your name' },
+                    gender: { type: 'radio', errMsg: 'Select your gender' },
+                    feedback: { type: 'array', errMsg: 'Field requried' },
+                    agree: { type: 'checkbox', errMsg: 'You must agree with the terms' },
+                    like: { type: 'array', errMsg: 'Requried' }
+                },
+                onComplete: function(form){
+                    console.log(form);
+                }
+            };
+
+            $('#form-six').validate(settings);
+
+        });
+    </script>
+
+</body>
+</html>

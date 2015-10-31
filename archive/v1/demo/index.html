@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Form validation using jQuery - very lightweight</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!--this css is only for demo purpose-->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="sourcecode">
+    <h1>Form validation using jQuery - very lightweight <iframe style="float:right" src="http://ghbtns.com/github-btn.html?user=im4aLL&repo=form-validation&type=fork" allowtransparency="true" frameborder="0" scrolling="0" width="53" height="20"></iframe></h1>
+    <p>A alternative to jquery validate plugin</p>
+
+    <div style="float: right">
+        <a href="https://raw.githubusercontent.com/im4aLL/form-validation/master/validation.min.js" target="_blank">Download JS</a>
+        <a href="https://github.com/im4aLL/form-validation/archive/master.zip">Download full demo</a>
+
+    </div>
+
+    <h3>Basic Usage:</h3>
+
+    <code>var $Form = $('#exampleForm');
+var rules = {
+    name: { type: 'text' },
+    email: { type: 'email' }
+};
+
+var FormInstance = new Form($Form, rules);
+FormInstance.validate();</code>
+
+    <h3>Demo:</h3>
+    <form action="" id="exampleForm">
+
+        <div class="field-block">
+            <label for="name">Name</label>
+            <input type="text" name="name" id="name">
+        </div>
+
+        <div class="field-block">
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email">
+        </div>
+
+        <div class="field-block">
+            <label>&nbsp;</label>
+            <button type="submit">Submit</button> checkout the console!
+        </div>
+
+    </form>
+
+    <hr>
+
+    <p>Wait! there's more :)</p>
+    <br>
+    <h3>Custom Error message</h3>
+    <p>You can set custom error message like this - </p>
+
+    <form action="" id="exampleForm2">
+
+        <div class="field-block">
+            <label for="name2">Name</label>
+            <input type="text" name="name" id="name2">
+        </div>
+
+        <div class="field-block">
+            <label for="email2">Email</label>
+            <input type="email" name="email" id="email2">
+        </div>
+
+        <div class="field-block">
+            <label>&nbsp;</label>
+            <button type="submit">Submit</button> checkout the console!
+        </div>
+
+    </form>
+
+    <p>Source</p>
+    <code>var $Form = $('#exampleForm2');
+var rules = {
+    name2: { type: 'text', errMsg: 'Enter your name' },
+    email2: { type: 'email', errMsg: 'Enter valid email' }
+};
+
+var FormInstanceTwo = new Form($Form, rules);
+FormInstanceTwo.validate(function(form){
+    console.log(form);
+
+    if( form.isValid ) {
+        alert("Form is validate!");
+        //form.submit();
+    }
+});</code>
+
+    <hr>
+    <h3>Custom method for indivisual rules</h3>
+    <p>You can set custom rules for your field. Say for example, you want to username need to be at least 5 char long. How you will do that? see below - </p>
+    <br>
+    <form action="" id="exampleForm3">
+
+        <div class="field-block">
+            <label for="name3">Name</label>
+            <input type="text" name="name" id="name3">
+        </div>
+
+        <div class="field-block">
+            <label for="email3">Email</label>
+            <input type="email" name="email" id="email3">
+        </div>
+
+        <div class="field-block">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username">
+        </div>
+
+        <div class="field-block">
+            <label>&nbsp;</label>
+            <button type="submit">Submit</button> checkout the console!
+        </div>
+
+    </form>
+    <p>Source</p>
+    <code>function <strong>checkusername</strong>(obj){
+    if( $('#'+obj.id).val().length >= 5 ) return true;
+    else return false;
+}
+
+var $Form = $('#exampleForm3');
+var rules = {
+    name3: { type: 'text', errMsg: 'Enter your name' },
+    email3: { type: 'email', errMsg: 'Enter valid email' },
+    username: { type: 'text', errMsg: 'Username need to be 5 char long!', customMethod: <strong>checkusername</strong> }
+};
+
+var FormInstanceThree = new Form($Form, rules);
+FormInstanceThree.validate(function(form){
+    console.log(form);
+
+    if( form.isValid ) {
+        alert("Form is validate!");
+        //form.submit();
+    }
+});</code>
+
+    <hr>
+    <h3>Error in custom place</h3>
+    <p>You might want show error somewhere else for a field. You can do it easily. See below - </p>
+    <br>
+    <form action="" id="exampleForm4">
+
+        this p tag has class <strong>showCustomError</strong> <br>
+        <p class="showCustomError" style="display: inline-block; width: 320px; border: 1px solid #ddd; padding: 10px; margin-bottom: 10px">
+            If error found in email field it will show here!
+        </p> <br><br>
+
+        <div class="field-block">
+            <label for="name4">Name</label>
+            <input type="text" name="name" id="name4">
+        </div>
+
+        <div class="field-block">
+            <label for="email4">Email</label>
+            <input type="email" name="email" id="email4">
+        </div>
+
+        <div class="field-block">
+            <label>&nbsp;</label>
+            <button type="submit">Submit</button> checkout the console!
+        </div>
+
+    </form>
+    <p>Source</p>
+    <code>function <strong>customError</strong>(obj){
+    if( obj.isValidField === false ) {
+        $('.showCustomError').html(obj.field.errMsg);
+    }
+}
+
+var $Form = $('#exampleForm4');
+var rules = {
+    name4: { type: 'text', errMsg: 'Enter your name' },
+    email4: { type: 'email', errMsg: 'Enter valid email', errReplace: <strong>customError</strong> }
+};
+
+var FormInstanceFour = new Form($Form, rules);
+FormInstanceFour.validate(function(form){
+    console.log(form);
+
+    if( form.isValid ) {
+        alert("Form is validate!");
+        //form.submit();
+    }
+});</code>
+
+    <h3>All error in another place</h3>
+    <p>Yes, its possible you can set global error turn off and show error in another place. See how it can be done - </p>
+    <br>
+    <form action="" id="exampleForm5">
+
+        this p tag has class <strong>error-container</strong> <br>
+        <p class="error-container" style="display: inline-block; width: 320px; border: 1px solid #ddd; padding: 10px; margin-bottom: 10px">
+            All error will be here!
+        </p> <br><br>
+
+        <div class="field-block">
+            <label for="name5">Name</label>
+            <input type="text" name="name" id="name5">
+        </div>
+
+        <div class="field-block">
+            <label for="email5">Email</label>
+            <input type="email" name="email" id="email5">
+        </div>
+
+        <div class="field-block">
+            <label>&nbsp;</label>
+            <button type="submit">Submit</button> checkout the console!
+        </div>
+
+    </form>
+    <p>Source</p>
+    <code>var $Form = $('#exampleForm5');
+var rules = {
+    name4: { type: 'text', errMsg: 'Enter your name' },
+    email4: { type: 'email', errMsg: 'Enter valid email' }
+};
+
+var FormInstanceFive = new Form($Form, rules, true);
+FormInstanceFive.validate(function(form){
+    console.log(form);
+
+    if( form.isValid ) {
+        alert("Form is validate!");
+        //form.submit();
+    }
+    else if( form.err.length > 0 ) {
+        $('.error-container').html('');
+        $.each(form.err, function(index, field) {
+            $('.error-container').append(field.errMsg+'&lt;br&gt;');
+        });
+    }
+});</code>
+
+    <h3>Error if another field set to ?</h3>
+    <p>Sometimes we do need validation which is related to another field. Say for example, we have asked user to give passport number. If user selects that user has passport number then user must need to fill passport field else no need to check for validation. Example - </p>
+    <br>
+    <form action="" id="exampleForm6" class="label-big">
+
+        <div class="field-block">
+            <label>Do you have passport?</label>
+            <input type="radio" name="passport" value="yes"> Yes
+            <input type="radio" name="passport" id="passport" value="no"> No
+        </div>
+
+        <div class="field-block">
+            <label for="passport_number">Passport no</label>
+            <input type="text" name="passport_number" id="passport_number">
+        </div>
+
+        <div class="field-block">
+            <label for="name6">Name</label>
+            <input type="text" name="name" id="name6">
+        </div>
+
+        <div class="field-block">
+            <label>&nbsp;</label>
+            <button type="submit">Submit</button> checkout the console!
+        </div>
+
+    </form>
+    <p>Source:</p>
+    <code>Syntax - require: { name: 'field_id', value: 'field_expected_value' }</code>
+    <code>var $Form = $('#exampleForm6');
+var rules = {
+    name6: { type: 'text' },
+    <strong>passport</strong>: { type: 'text', inputType: 'radio' }, // inputType: 'radio' is MUST if you are trigger radio input and its triggering input name instead of ID
+    passport_number: { type: 'text', <strong>require: { name: 'passport', value: 'yes' }</strong> }
+};
+
+var FormInstanceSix = new Form($Form, rules);
+FormInstanceSix.validate(function(form){
+    console.log(form);
+
+    if( form.isValid ) {
+        alert("Form is validate!");
+        //form.submit();
+    }
+});</code>
+
+    <h3>What if you have array inputs? like - </h3>
+    <code>&#x3C;input type=&#x22;text&#x22; name=&#x22;questions[]&#x22;&#x3E;
+&#x3C;input type=&#x22;text&#x22; name=&#x22;questions[]&#x22;&#x3E;</code>
+
+    <p>Then do just following - </p>
+    <code>&#x3C;div id=&#x22;<strong>questions</strong>&#x22;&#x3E;
+    &#x3C;input type=&#x22;text&#x22; name=&#x22;questions[]&#x22;&#x3E;
+    &#x3C;input type=&#x22;text&#x22; name=&#x22;questions[]&#x22;&#x3E;
+&#x3C;/div&#x3E;</code>
+    <p>And rules should be like this - </p>
+    <code><strong>questions</strong> : { type: 'array' }</code>
+
+    <h3>Demo</h3>
+
+    <form action="" id="exampleForm7" class="label-big">
+
+        <div class="field-block">
+            <label for="name7">Name</label>
+            <input type="text" name="name" id="name7">
+        </div>
+
+        <div class="field-block">
+            <label for="">Feedback</label>
+            <div id="feedback" style="display: inline-block">
+                Good? why? <input type="text" name="feedback[]">
+                Bad? why? <input type="text" name="feedback[]">
+                Avg? why? <input type="text" name="feedback[]">
+            </div>
+        </div>
+
+        <div class="field-block">
+            <label for="">&nbsp;</label>
+            <input type="checkbox" name="agree" id="agree"> I agree with the terms and conditions
+        </div>
+
+        <div class="field-block">
+            <label for="">I like</label>
+            <div id="like" style="display: inline-block">
+                <input type="checkbox" name="like[]" value="juice"> Juice
+                <input type="checkbox" name="like[]" value="fried rice"> Fried rice
+                <input type="checkbox" name="like[]" value="spicy"> Spicy food
+            </div>
+        </div>
+
+        <div class="field-block">
+            <label>&nbsp;</label>
+            <button type="submit">Submit</button> checkout the console!
+        </div>
+
+    </form>
+    <p>Source code:</p>
+    <code>var $Form = $('#exampleForm7');
+var rules = {
+    name7: { type: 'text' },
+    feedback: { type: 'array' },
+    like: { type: 'array', inputType: 'checkbox' },
+    agree: { type: 'text', inputType: 'checkbox' }
+};
+
+var FormInstanceSeven = new Form($Form, rules);
+FormInstanceSeven.validate(function(form){
+    console.log(form);
+
+    if( form.isValid ) {
+        alert("Form is validate!");
+        //form.submit();
+    }
+});</code>
+
+
+</div>
+
+
+
+<script src="jquery.js"></script>
+<script src="../validation.js"></script>
+
+<script>
+    jQuery(document).ready(function($) {
+
+        /* exampleForm 1 */
+        var $Form = $('#exampleForm');
+        var rules = {
+            name: { type: 'text' },
+            email: { type: 'email' }
+        };
+
+        var FormInstance = new Form($Form, rules);
+        FormInstance.validate(function(form){
+            console.log(form);
+
+            if( form.isValid ) {
+                alert("Form is validate!");
+                //form.submit();
+            }
+        });
+
+        /* exampleForm 2 */
+        var $Form = $('#exampleForm2');
+        var rules = {
+            name2: { type: 'text', errMsg: 'Enter your name' },
+            email2: { type: 'email', errMsg: 'Enter valid email' }
+        };
+
+        var FormInstanceTwo = new Form($Form, rules);
+        FormInstanceTwo.validate(function(form){
+            console.log(form);
+
+            if( form.isValid ) {
+                alert("Form is validate!");
+                //form.submit();
+            }
+        });
+
+        /* exampleForm 3 */
+        function checkusername(obj){
+            if( $('#'+obj.id).val().length >= 5 ) return true;
+            else return false;
+        }
+
+        var $Form = $('#exampleForm3');
+        var rules = {
+            name3: { type: 'text', errMsg: 'Enter your name' },
+            email3: { type: 'email', errMsg: 'Enter valid email' },
+            username: { type: 'text', errMsg: 'Username need to be 5 char long!', customMethod: checkusername }
+        };
+
+        var FormInstanceThree = new Form($Form, rules);
+        FormInstanceThree.validate(function(form){
+            console.log(form);
+
+            if( form.isValid ) {
+                alert("Form is validate!");
+                //form.submit();
+            }
+        });
+
+        /* exampleForm 4 */
+        function customError(obj){
+            if( obj.isValidField === false ) {
+                $('.showCustomError').html(obj.field.errMsg);
+            }
+        }
+
+        var $Form = $('#exampleForm4');
+        var rules = {
+            name4: { type: 'text', errMsg: 'Enter your name' },
+            email4: { type: 'email', errMsg: 'Enter valid email', errReplace: customError }
+        };
+
+        var FormInstanceFour = new Form($Form, rules);
+        FormInstanceFour.validate(function(form){
+            console.log(form);
+
+            if( form.isValid ) {
+                alert("Form is validate!");
+                //form.submit();
+            }
+        });
+
+        /* exampleForm 5 */
+        var $Form = $('#exampleForm5');
+        var rules = {
+            name4: { type: 'text', errMsg: 'Enter your name' },
+            email4: { type: 'email', errMsg: 'Enter valid email' }
+        };
+
+        var FormInstanceFive = new Form($Form, rules, true);
+        FormInstanceFive.validate(function(form){
+            console.log(form);
+
+            if( form.isValid ) {
+                alert("Form is validate!");
+                //form.submit();
+            }
+            else if( form.err.length > 0 ) {
+                $('.error-container').html('');
+                $.each(form.err, function(index, field) {
+                    $('.error-container').append(field.errMsg+'<br>');
+                });
+            }
+        });
+
+        /* exampleForm 6 */
+        var $Form = $('#exampleForm6');
+        var rules = {
+            name6: { type: 'text' },
+            passport: { type: 'text', inputType: 'radio' }, // inputType: 'radio' is MUST if you are trigger radio input and its triggering input name instead of ID
+            passport_number: { type: 'text', require: { name: 'passport', value: 'yes' } }
+        };
+
+        var FormInstanceSix = new Form($Form, rules);
+        FormInstanceSix.validate(function(form){
+            console.log(form);
+
+            if( form.isValid ) {
+                alert("Form is validate!");
+                //form.submit();
+            }
+        });
+
+        /* exampleForm 7 */
+        var $Form = $('#exampleForm7');
+        var rules = {
+            name7: { type: 'text' },
+            feedback: { type: 'array' },
+            like: { type: 'array', inputType: 'checkbox' },
+            agree: { type: 'text', inputType: 'checkbox' }
+        };
+
+        var FormInstanceSeven = new Form($Form, rules);
+        FormInstanceSeven.validate(function(form){
+            console.log(form);
+
+            if( form.isValid ) {
+                alert("Form is validate!");
+                //form.submit();
+            }
+        });
+
+    });
+</script>
+
+<div style="padding: 20px">
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'habibhadi'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+
+
+</body>
+</html>
