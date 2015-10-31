@@ -11,7 +11,8 @@
     var pluginName = 'validate',
         defaults = {
             errorReplacement: false,
-            onComplete: null
+            onComplete: null,
+            ajaxSubmit: false
         };
 
     function Plugin( element, options ) {
@@ -26,6 +27,7 @@
         this.errorReplacement   = this.options.errorReplacement;
         this.callback           = this.options.onComplete;
         this.fieldValues        = {};
+        this.ajaxSubmit         = this.options.ajaxSubmit;
 
         this.init();
     }
@@ -115,7 +117,7 @@
             if( typeof(callback) === 'function' ) callback.call( this, { obj: form, isValid : !error, err: errors, values : self.fieldValues } );
 
             // prevent button behaviour
-            if(error === true) {
+            if(error === true || self.ajaxSubmit === true) {
                 return false;
             }
         });
