@@ -130,7 +130,8 @@
         var $field = obj,
             isValidField = false,
             self = this,
-            currentValue;
+            currentValue,
+            value = $.trim($field.val());
 
         if(field.require !== undefined) {
             if(self.fieldValues[field.require.name] != field.require.value) {
@@ -142,14 +143,13 @@
         switch( field.type ) {
             case 'email':
                 var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                isValidField = re.test($field.val());
+                isValidField = re.test(value);
                 currentValue = $field.val();
             break;
 
             case 'text':
-                if( $field.val() !== undefined && $field.val().length > 0 ) isValidField = true;
-
-                currentValue = $field.val();
+                if( value !== undefined && value.length > 0 ) isValidField = true;
+                currentValue = value;
             break;
 
             case 'checkbox':
