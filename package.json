@@ -1,0 +1,22 @@
+{
+  "name": "jquery-simple-form-validation",
+  "version": "2.0.0",
+  "description": "Very lightweight and simple form validation jquery plugin",
+  "main": "src/jquery.form.validation.2.0.0.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/im4aLL/form-validation.git"
+  },
+  "keywords": [
+    "form-validation"
+  ],
+  "author": "Habib Hadi <me@habibhadi.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/im4aLL/form-validation/issues"
+  },
+  "homepage": "https://github.com/im4aLL/form-validation#readme"
+}
